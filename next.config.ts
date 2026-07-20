@@ -1,7 +1,28 @@
 import type { NextConfig } from "next";
 
+const securityHeaders = [
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=()",
+  },
+];
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Dev-only: allow LAN phone preview + 127.0.0.1 (not covered by "localhost").
+  // Without this, Next blocks /_next/* with Origin headers and client components never hydrate —
+  // so only SSR links like Donate work and the hamburger stays dead.
+  allowedDevOrigins: ["127.0.0.1", "192.168.1.5"],
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: securityHeaders,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
