@@ -58,7 +58,7 @@ export default function OpenGraphImage() {
               fontWeight: 500,
             }}
           >
-            Girl child education · Sustainable agriculture · Community care across Uganda
+            Child education · Sustainable agriculture · Community care across Uganda
           </div>
         </div>
 

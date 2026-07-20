@@ -117,7 +117,7 @@ export function buildOrganizationJsonLd() {
       name: "Donate to Seeds of Hope",
       target: donateUrl,
       description:
-        "Support girl child education, sustainable agriculture, and community care across Uganda.",
+        "Support child education, sustainable agriculture, and community care across Uganda.",
     },
   };
 }
@@ -145,7 +145,7 @@ export function getSiteKeywords(): string[] {
     "Hafisa Magezi Foundation",
     "Uganda nonprofit",
     "Masaka",
-    "girl child education",
+    "child education",
     "coffee agriculture Uganda",
     "community empowerment",
     "Seeds of Hope",
