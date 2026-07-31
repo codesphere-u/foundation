@@ -1,78 +1,100 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { campaign, donation, donationAmounts, donateUrl } from "@/lib/content";
+import { useMemo, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+  calculator,
+  campaign,
+  donation,
+  donationAmounts,
+  donateUrl,
+} from "@/lib/content";
 import { Button } from "@/components/ui/Button";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { AmbientSky } from "@/components/motion/AmbientSky";
-import { SeedlingGrow } from "@/components/motion/SeedlingGrow";
+import { ButterflyIcon, GeometricStar, SeedlingIcon } from "@/components/illustrations/Icons";
+
+function donateHref(amountValue: number | null) {
+  if (amountValue == null) return donateUrl;
+  const url = new URL(donateUrl);
+  url.searchParams.set("amount", String(amountValue));
+  return url.toString();
+}
+
+function impactFromAmount(value: number | null) {
+  if (value == null) {
+    return {
+      kits: null as number | null,
+      seedlings: null as number | null,
+      days: null as number | null,
+    };
+  }
+  return {
+    kits: Math.floor(value / calculator.rates.schoolKits),
+    seedlings: Math.floor(value / calculator.rates.seedlings),
+    days: Math.floor(value / calculator.rates.outreachDays),
+  };
+}
+
+function formatImpact(value: number | null) {
+  if (value == null) return "Any";
+  if (value === 0) return "—";
+  return String(value);
+}
 
 export function DonationFinale() {
   const [selected, setSelected] = useState<string>("50k");
+  const reduce = useReducedMotion();
   const amount = donationAmounts.find((a) => a.id === selected) ?? donationAmounts[1];
   const progress = Math.min(campaign.current / campaign.goal, 1);
-  const remaining = Math.max(campaign.goal - campaign.current, 0);
+  const ctaHref = useMemo(() => donateHref(amount.value), [amount.value]);
+  const impact = useMemo(() => impactFromAmount(amount.value), [amount.value]);
 
   return (
-    <section id="donate" className="relative overflow-hidden">
-      <div className="absolute inset-0">
-        <Image
-          src={donation.backgroundImage}
-          alt="Warm Ugandan sunrise sky — hope for tomorrow"
-          fill
-          className="object-cover object-[50%_40%]"
-          sizes="100vw"
-        />
-      </div>
-      <div className="absolute inset-0 bg-purple-deep/88" />
-      <AmbientSky />
-
-      <div className="section-pad relative mx-auto max-w-3xl px-5 text-center md:px-8">
-        <FadeIn>
-          <div className="mb-4 flex justify-center">
-            <SeedlingGrow />
-          </div>
-          <p className="text-xs font-semibold tracking-[0.22em] text-gold-soft uppercase">
-            {donation.eyebrow}
-          </p>
-          <h2 className="mt-3 font-display text-3xl font-semibold text-white sm:text-4xl md:text-5xl">
+    <section id="donate" className="relative overflow-hidden bg-paper">
+      <div className="section-pad relative mx-auto max-w-5xl px-5 md:px-8">
+        <FadeIn className="mx-auto max-w-2xl text-center">
+          <p className="eyebrow">{donation.eyebrow}</p>
+          <h2 className="mt-3 font-display text-3xl font-semibold text-purple-deep sm:text-4xl md:text-5xl">
             {donation.title}
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/80">
-            {donation.subtitle}
-          </p>
+          <p className="luxury-prose mx-auto mt-4 max-w-xl">{donation.subtitle}</p>
         </FadeIn>
 
-        <FadeIn delay={0.1} className="mt-10">
-          <div className="mx-auto max-w-md">
-            <div className="mb-2 flex items-end justify-between gap-3 text-left">
-              <p className="text-sm font-medium text-white/85">
-                <span className="font-display text-2xl font-semibold text-gold-soft">
-                  {campaign.current.toLocaleString()}
-                </span>
-                <span className="text-white/60"> lives reached</span>
-              </p>
-              <p className="text-xs text-white/55">
-                Goal {campaign.goal.toLocaleString()}
-              </p>
+        <FadeIn delay={0.08} className="mt-12 overflow-hidden rounded-[2rem]">
+          <div className="relative aspect-[21/9] min-h-[12rem] sm:min-h-[14rem]">
+            <Image
+              src={donation.backgroundImage}
+              alt={donation.backgroundImageAlt}
+              fill
+              className="object-cover object-[50%_35%]"
+              sizes="(max-width: 1024px) 100vw, 960px"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-purple-deep/50 via-transparent to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-6">
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] font-semibold tracking-[0.18em] text-gold-soft uppercase">
+                  Shared goal · {campaign.goal.toLocaleString()} lives
+                </p>
+                <div className="mt-2 h-1.5 max-w-xs overflow-hidden rounded-full bg-white/25">
+                  <motion.div
+                    className="h-full rounded-full bg-gold"
+                    initial={reduce ? false : { width: 0 }}
+                    whileInView={{ width: `${progress * 100}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="h-2.5 overflow-hidden rounded-full bg-white/15">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-gold to-gold-soft transition-all duration-1000"
-                style={{ width: `${progress * 100}%` }}
-              />
-            </div>
-            <p className="mt-3 text-sm text-white/70">
-              {remaining > 0
-                ? `${remaining.toLocaleString()} more lives to reach our shared goal — every gift grows the harvest.`
-                : "Goal reached — thank you for growing hope with us."}
-            </p>
           </div>
         </FadeIn>
 
-        <FadeIn delay={0.15} className="mt-10">
-          <ul className="grid gap-3 sm:grid-cols-2">
+        <FadeIn delay={0.12} className="mt-10">
+          <p className="text-center text-xs font-semibold tracking-[0.16em] text-muted uppercase">
+            Choose an amount
+          </p>
+          <ul className="mt-4 flex flex-wrap justify-center gap-2 sm:gap-3">
             {donationAmounts.map((opt) => {
               const on = opt.id === selected;
               return (
@@ -80,35 +102,93 @@ export function DonationFinale() {
                   <button
                     type="button"
                     onClick={() => setSelected(opt.id)}
-                    className={`glass-dark w-full rounded-2xl px-5 py-4 text-left transition ${
-                      on ? "ring-2 ring-gold" : "hover:bg-white/10"
+                    className={`min-h-11 rounded-full px-5 py-2.5 text-sm font-semibold transition ${
+                      on
+                        ? "bg-purple text-white shadow-md"
+                        : "bg-lavender/80 text-purple hover:bg-lavender"
                     }`}
                     aria-pressed={on}
                   >
-                    <p className="font-display text-xl font-semibold text-gold-soft">{opt.label}</p>
-                    <p className="mt-1 text-sm text-white/70">{opt.impact}</p>
+                    {opt.label}
                   </button>
                 </li>
               );
             })}
           </ul>
-          <p className="mt-6 text-sm text-white/65" aria-live="polite">
-            Selected: {amount.label} — {amount.impact}
-          </p>
-          <p className="mt-2 text-xs text-white/50">
-            You will complete your gift securely on RaiseUG.
-          </p>
-          <div className="mt-8 flex justify-center">
-            <Button
-              href={donateUrl}
-              variant="gold"
-              className="glow-btn px-10"
-              heartbeat
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Continue on RaiseUG
-            </Button>
+        </FadeIn>
+
+        <FadeIn delay={0.16} className="mx-auto mt-10 max-w-3xl">
+          <div className="rounded-[1.75rem] border border-purple/10 bg-white/80 px-5 py-8 sm:px-10">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={amount.id}
+                initial={reduce ? false : { opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reduce ? undefined : { opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="text-center text-base text-muted sm:text-lg"
+                aria-live="polite"
+              >
+                {amount.impact}
+              </motion.p>
+            </AnimatePresence>
+
+            <ul className="mt-8 grid grid-cols-3 gap-4 border-t border-gold/25 pt-8">
+              <li className="text-center">
+                <ButterflyIcon className="mx-auto h-8 w-8" />
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={`k-${amount.id}`}
+                    initial={reduce ? false : { opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-2 font-display text-2xl font-semibold text-purple sm:text-3xl"
+                  >
+                    {formatImpact(impact.kits)}
+                  </motion.p>
+                </AnimatePresence>
+                <p className="mt-1 text-xs text-muted">Learning kits</p>
+              </li>
+              <li className="text-center">
+                <SeedlingIcon className="mx-auto h-8 w-8" />
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={`s-${amount.id}`}
+                    initial={reduce ? false : { opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-2 font-display text-2xl font-semibold text-purple sm:text-3xl"
+                  >
+                    {formatImpact(impact.seedlings)}
+                  </motion.p>
+                </AnimatePresence>
+                <p className="mt-1 text-xs text-muted">Coffee seedlings</p>
+              </li>
+              <li className="text-center">
+                <GeometricStar className="mx-auto h-8 w-8 text-gold" />
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={`d-${amount.id}`}
+                    initial={reduce ? false : { opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-2 font-display text-2xl font-semibold text-purple sm:text-3xl"
+                  >
+                    {formatImpact(impact.days)}
+                  </motion.p>
+                </AnimatePresence>
+                <p className="mt-1 text-xs text-muted">Outreach days</p>
+              </li>
+            </ul>
+
+            <div className="mt-10 flex justify-center">
+              <Button
+                href={ctaHref}
+                variant="gold"
+                className="px-10"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {donation.ctaLabel}
+              </Button>
+            </div>
           </div>
         </FadeIn>
       </div>

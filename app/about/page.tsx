@@ -1,3 +1,4 @@
+import { Leadership } from "@/components/sections/Leadership";
 import { Partnerships } from "@/components/sections/Partnerships";
 import { Story } from "@/components/sections/Story";
 import { Testimonials } from "@/components/sections/Testimonials";
@@ -30,6 +31,7 @@ export default function AboutPage() {
         imageAlt={hero.imageAlt}
       />
       <Story />
+      <Leadership />
       <UgandaMap />
       <LivingTimeline />
       <Partnerships />

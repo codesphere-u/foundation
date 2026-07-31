@@ -1,24 +1,32 @@
 import Image from "next/image";
-import { missions } from "@/lib/content";
+import { programmeAreas } from "@/lib/content";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { ButterflyIcon, GeometricStar, SeedlingIcon } from "@/components/illustrations/Icons";
+import {
+  ButterflyIcon,
+  GeometricStar,
+  LeafIcon,
+  SeedlingIcon,
+} from "@/components/illustrations/Icons";
 
 const icons = {
+  care: GeometricStar,
   education: ButterflyIcon,
-  agriculture: SeedlingIcon,
-  community: GeometricStar,
+  livelihoods: SeedlingIcon,
+  health: GeometricStar,
+  environment: LeafIcon,
+  partnerships: GeometricStar,
 } as const;
 
 export function ProgramPillars() {
   return (
     <section className="bg-paper">
-      {missions.map((mission, i) => {
+      {programmeAreas.map((area, i) => {
         const reverse = i % 2 === 1;
-        const Icon = icons[mission.id];
+        const Icon = icons[area.id as keyof typeof icons] ?? GeometricStar;
         return (
           <article
-            key={mission.id}
-            id={mission.id}
+            key={area.id}
+            id={area.id}
             className={`scroll-mt-24 ${reverse ? "bg-lavender/50" : "bg-paper"}`}
           >
             <div
@@ -29,14 +37,14 @@ export function ProgramPillars() {
               <FadeIn variant={reverse ? "right" : "left"}>
                 <div className="relative aspect-[4/3] overflow-hidden lg:aspect-auto lg:min-h-[32rem]">
                   <Image
-                    src={mission.image}
-                    alt={mission.imageAlt}
+                    src={area.image}
+                    alt={area.imageAlt}
                     fill
                     className="object-cover transition duration-700 hover:scale-[1.03]"
-                    style={{ objectPosition: mission.objectPosition }}
+                    style={{ objectPosition: area.objectPosition }}
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-purple-deep/35 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-purple-deep/10" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-purple-deep/25 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-purple-deep/8" />
                 </div>
               </FadeIn>
 
@@ -47,14 +55,14 @@ export function ProgramPillars() {
               >
                 <Icon className="h-12 w-12 text-gold" />
                 <p className="mt-4 text-xs font-semibold tracking-[0.18em] text-gold uppercase">
-                  {mission.accent}
+                  {area.accent}
                 </p>
                 <h2 className="mt-3 font-display text-4xl font-semibold text-purple-deep md:text-5xl">
-                  {mission.title}
+                  {area.title}
                 </h2>
-                <p className="luxury-prose mt-5 md:text-lg">{mission.description}</p>
+                <p className="luxury-prose mt-5 md:text-lg">{area.description}</p>
                 <p className="mt-6 text-sm font-medium text-purple/85 md:text-base">
-                  {mission.outcome}
+                  {area.outcome}
                 </p>
               </FadeIn>
             </div>

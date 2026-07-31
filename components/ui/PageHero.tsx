@@ -22,12 +22,12 @@ export function PageHero({ eyebrow, title, subtitle, image, imageAlt }: Props) {
           sizes="100vw"
         />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-purple-deep/94 via-purple-deep/55 to-purple-deep/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-purple-deep/78 via-purple-deep/40 to-purple-deep/15" />
       <div
-        className="absolute inset-0 opacity-45"
+        className="absolute inset-0 opacity-40"
         style={{
           background:
-            "radial-gradient(ellipse 70% 50% at 70% 15%, rgba(197,155,39,0.38), transparent 60%)",
+            "radial-gradient(ellipse 70% 50% at 70% 15%, rgba(197,155,39,0.32), transparent 60%)",
         }}
         aria-hidden
       />

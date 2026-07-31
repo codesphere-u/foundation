@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { missions } from "@/lib/content";
+import { missions, programJourney } from "@/lib/content";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { ButterflyIcon, CurveDivider, GeometricStar, SeedlingIcon } from "@/components/illustrations/Icons";
 import { Parallax } from "@/components/motion/Parallax";
@@ -11,6 +11,12 @@ const accents = {
   community: GeometricStar,
 } as const;
 
+const pillarAnchors = {
+  education: "education",
+  agriculture: "livelihoods",
+  community: "partnerships",
+} as const;
+
 export function ProgramJourney() {
   return (
     <section className="relative overflow-hidden bg-purple-deep text-white">
@@ -19,13 +25,13 @@ export function ProgramJourney() {
       <div className="section-pad relative mx-auto max-w-6xl px-5 md:px-8">
         <FadeIn className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-semibold tracking-[0.22em] text-gold-soft uppercase">
-            Our programs
+            {programJourney.eyebrow}
           </p>
           <h2 className="mt-3 font-display text-3xl font-semibold sm:text-4xl md:text-5xl">
-            Three pillars of lasting change
+            {programJourney.title}
           </h2>
           <p className="mt-4 text-base leading-relaxed text-white/75">
-            Education, agriculture, and community care—woven so hope can take root and multiply.
+            {programJourney.subtitle}
           </p>
         </FadeIn>
 
@@ -54,7 +60,7 @@ export function ProgramJourney() {
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-purple-deep/50 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-purple-deep/35 to-transparent" />
                   </Parallax>
                   <div>
                     <Icon className="h-12 w-12 text-gold-soft" />
@@ -68,7 +74,7 @@ export function ProgramJourney() {
                       {mission.outcome}
                     </p>
                     <Link
-                      href={`/programs#${mission.id}`}
+                      href={`/programs#${pillarAnchors[mission.id]}`}
                       className="mt-6 inline-flex min-h-11 items-center text-sm font-semibold text-gold-soft underline decoration-gold/50 underline-offset-8 transition hover:decoration-gold"
                     >
                       Explore this pillar

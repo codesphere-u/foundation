@@ -1,6 +1,5 @@
 import { CompassionStory } from "@/components/sections/CompassionStory";
 import { DonationFinale } from "@/components/sections/DonationFinale";
-import { FloatingVoices } from "@/components/sections/FloatingVoices";
 import { Hero } from "@/components/sections/Hero";
 import { ImpactTrust } from "@/components/sections/ImpactTrust";
 import { PhotoRiver } from "@/components/sections/PhotoRiver";
@@ -29,7 +28,6 @@ export default function HomePage() {
       <ImpactTrust />
       <ProgramJourney />
       <StoryMoments />
-      <FloatingVoices />
       <PhotoRiver />
       <DonationFinale />
     </>

@@ -55,7 +55,7 @@ export function ImpactCalculator() {
             <li className="text-center">
               <ButterflyIcon className="mx-auto h-10 w-10" />
               <p className="mt-3 font-display text-3xl font-semibold text-purple">{impact.kits}</p>
-              <p className="mt-1 text-sm text-muted">School kits</p>
+              <p className="mt-1 text-sm text-muted">Learning kits</p>
             </li>
             <li className="text-center">
               <SeedlingIcon className="mx-auto h-10 w-10" />
@@ -71,17 +71,15 @@ export function ImpactCalculator() {
 
           <div className="mt-10 flex flex-col items-center gap-3">
             <p className="text-center text-xs text-muted">
-              Suggested gift: UGX {amount.toLocaleString()} — complete securely on RaiseUG.
+              Suggested amount: UGX {amount.toLocaleString()}
             </p>
             <Button
               href={donateUrl}
               variant="gold"
-              className="glow-btn"
-              heartbeat
               target="_blank"
               rel="noopener noreferrer"
             >
-              Continue on RaiseUG
+              Invest now
             </Button>
           </div>
         </FadeIn>

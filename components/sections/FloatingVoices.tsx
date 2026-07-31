@@ -28,7 +28,7 @@ export function FloatingVoices() {
       <div className="section-pad relative mx-auto max-w-6xl px-5 md:px-8">
         <FadeIn className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-semibold tracking-[0.22em] text-gold-soft uppercase">
-            Voices of hope
+            Voices of empowerment
           </p>
           <h2 className="mt-3 font-display text-3xl font-semibold sm:text-4xl md:text-5xl">
             Stories that float from the community

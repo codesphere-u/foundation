@@ -1,4 +1,4 @@
-import { testimonials } from "@/lib/content";
+import { testimonials, testimonialsHeading } from "@/lib/content";
 import { FadeIn } from "@/components/ui/FadeIn";
 
 export function Testimonials() {
@@ -8,13 +8,11 @@ export function Testimonials() {
     <section className="relative overflow-hidden bg-paper">
       <div className="section-pad relative mx-auto max-w-6xl px-5 md:px-8">
         <FadeIn className="mx-auto max-w-2xl text-center">
-          <p className="eyebrow">Community voices</p>
+          <p className="eyebrow">{testimonialsHeading.eyebrow}</p>
           <h2 className="mt-3 font-display text-3xl font-semibold text-purple-deep sm:text-4xl md:text-5xl">
-            Stories that keep us moving
+            {testimonialsHeading.title}
           </h2>
-          <p className="luxury-prose mt-4">
-            Real hope from parents, farmers, volunteers, and partners across Masaka.
-          </p>
+          <p className="luxury-prose mt-4">{testimonialsHeading.subtitle}</p>
         </FadeIn>
 
         <div className="mt-14 grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-16">

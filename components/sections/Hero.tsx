@@ -17,7 +17,6 @@ import { Button } from "@/components/ui/Button";
 import { AmbientSky } from "@/components/motion/AmbientSky";
 import { Magnetic } from "@/components/motion/Magnetic";
 import { SplitWords } from "@/components/motion/SplitWords";
-import { ButterflyIcon } from "@/components/illustrations/Icons";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const SLIDE_MS = 6500;
@@ -48,8 +47,6 @@ export function Hero() {
   const imgY = useTransform(springY, (v) => (reduce ? 0 : v * 12));
   const lightX = useTransform(springX, (v) => (reduce ? 0 : v * 28));
   const lightY = useTransform(springY, (v) => (reduce ? 0 : v * 18));
-  const butterflyX = useTransform(springX, (v) => (reduce ? 0 : v * -24));
-  const butterflyY = useTransform(springY, (v) => (reduce ? 0 : v * -16));
   const lightPos = useMotionTemplate`radial-gradient(ellipse 70% 50% at calc(50% + ${lightX}px) calc(12% + ${lightY}px), rgba(197,155,39,0.38), transparent 55%)`;
 
   useEffect(() => {
@@ -132,28 +129,15 @@ export function Hero() {
         </div>
       ) : null}
 
-      <div className="absolute inset-0 bg-gradient-to-t from-purple-deep/94 via-purple-deep/55 to-purple-deep/25" />
+      <div className="absolute inset-0 bg-gradient-to-t from-purple-deep/78 via-purple-deep/42 to-purple-deep/18" />
 
       <motion.div
-        className="absolute inset-0 opacity-60"
+        className="absolute inset-0 opacity-45"
         style={{ background: lightPos }}
         aria-hidden
       />
 
       <AmbientSky dense />
-
-      {!reduce ? (
-        <motion.div
-          className="pointer-events-none absolute top-[30%] left-[12%] hidden opacity-50 md:block"
-          aria-hidden
-          style={{ x: butterflyX, y: butterflyY }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
-          transition={{ delay: 1.4, duration: 0.8 }}
-        >
-          <ButterflyIcon className="animate-float h-9 w-9" />
-        </motion.div>
-      ) : null}
 
       <motion.div
         className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-5 pt-28 pb-16 text-center sm:px-8 sm:pt-32 sm:pb-24"
@@ -186,7 +170,6 @@ export function Hero() {
 
         <SplitWords
           text={hero.headline}
-          highlight="100,000"
           delay={0.42}
           stagger={0.075}
           className="font-display text-[1.85rem] leading-[1.12] font-semibold text-white sm:text-5xl md:text-6xl lg:text-[4.25rem]"
@@ -211,8 +194,7 @@ export function Hero() {
             <Button
               href={hero.primaryCta.href}
               variant="gold"
-              className="glow-btn w-full sm:w-auto"
-              heartbeat
+              className="w-full sm:w-auto"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -232,12 +214,6 @@ export function Hero() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.7, ease, delay: 1.35 }}
         >
-          <p
-            className="text-[11px] font-semibold tracking-[0.2em] text-gold-soft/90 uppercase"
-            aria-live="polite"
-          >
-            {active.theme}
-          </p>
           <div className="flex items-center gap-2" role="tablist" aria-label="Story slides">
             {slides.map((slide, i) => {
               const on = i === index;

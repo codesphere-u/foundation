@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { mapProjects } from "@/lib/content";
+import { mapHeading, mapProjects } from "@/lib/content";
 import { FadeIn } from "@/components/ui/FadeIn";
 
 /** Simplified Uganda-inspired outline for interactive project map. */
@@ -34,22 +34,16 @@ export function UgandaMap() {
     <section className="relative overflow-hidden bg-lavender/50">
       <div className="section-pad relative mx-auto max-w-6xl px-5 md:px-8">
         <FadeIn className="mx-auto max-w-2xl text-center">
-          <p className="eyebrow">Where we serve</p>
+          <p className="eyebrow">{mapHeading.eyebrow}</p>
           <h2 className="mt-3 font-display text-3xl font-semibold text-purple-deep sm:text-4xl md:text-5xl">
-            Growing across Uganda
+            {mapHeading.title}
           </h2>
-          <p className="luxury-prose mt-4">
-            Rooted in Masaka today—with planned expansion for education, agriculture, and care.
-          </p>
+          <p className="luxury-prose mt-4">{mapHeading.subtitle}</p>
         </FadeIn>
 
         <div className="mt-12 grid items-center gap-10 lg:grid-cols-2">
           <FadeIn className="relative mx-auto w-full max-w-md">
-            <svg
-              viewBox="0 0 300 380"
-              className="h-auto w-full drop-shadow-lg"
-              aria-hidden
-            >
+            <svg viewBox="0 0 300 380" className="h-auto w-full drop-shadow-lg" role="img" aria-label="Map of programme locations across Uganda">
               <defs>
                 <linearGradient id="ugFill" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#4a2e80" stopOpacity="0.85" />
@@ -59,22 +53,41 @@ export function UgandaMap() {
               <UgandaOutline />
               {mapProjects.map((pin) => {
                 const isOn = pin.id === active;
+                const cx = (pin.x / 100) * 300;
+                const cy = (pin.y / 100) * 380;
                 return (
-                  <g key={pin.id} className="pointer-events-none">
+                  <g key={pin.id}>
                     <circle
-                      cx={(pin.x / 100) * 300}
-                      cy={(pin.y / 100) * 380}
-                      r={isOn ? 14 : 10}
-                      className={isOn ? "fill-gold" : "fill-gold/55"}
+                      cx={cx}
+                      cy={cy}
+                      r={28}
+                      className="fill-transparent cursor-pointer"
+                      onClick={() => setActive(pin.id)}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${pin.name}${pin.status === "planned" ? " (planned)" : " (active)"}`}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          setActive(pin.id);
+                        }
+                      }}
                     />
                     <circle
-                      cx={(pin.x / 100) * 300}
-                      cy={(pin.y / 100) * 380}
+                      cx={cx}
+                      cy={cy}
+                      r={isOn ? 14 : 10}
+                      className={`pointer-events-none ${isOn ? "fill-gold" : "fill-gold/55"}`}
+                    />
+                    <circle
+                      cx={cx}
+                      cy={cy}
                       r={isOn ? 22 : 0}
                       fill="none"
                       stroke="#d4b45a"
                       strokeWidth="2"
                       opacity={isOn ? 0.6 : 0}
+                      className="pointer-events-none"
                     />
                   </g>
                 );
@@ -83,7 +96,7 @@ export function UgandaMap() {
           </FadeIn>
 
           <FadeIn delay={0.1}>
-            <div className="glass rounded-[2rem] p-8" role="region" aria-live="polite">
+            <div className="rounded-[2rem] border border-purple/10 bg-white/60 p-8" role="region" aria-live="polite">
               <div className="flex flex-wrap items-center gap-2">
                 <p className="text-xs font-semibold tracking-[0.2em] text-gold uppercase">
                   {project.focus}

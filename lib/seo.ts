@@ -27,10 +27,10 @@ export type PageMetadataInput = {
 };
 
 const defaultOgImage: PageOgImage = {
-  url: "/images/grand-opening.jpg",
-  width: 2000,
-  height: 1328,
-  alt: "Hafisa Magezi Foundation grand opening celebration in Masaka, Uganda",
+  url: "/images/hero-empowerment.jpg",
+  width: 1200,
+  height: 630,
+  alt: "People working together with purpose across Uganda’s green hills",
 };
 
 export function pageMetadata({
@@ -88,13 +88,14 @@ export function buildOrganizationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": ["NGO", "Organization"],
-    name: site.name,
-    alternateName: site.shortName,
+    name: site.legalName,
+    alternateName: [site.name, site.shortName],
     url: siteUrl,
     logo: `${siteUrl}/icon.png`,
-    image: `${siteUrl}/images/grand-opening.jpg`,
+    image: `${siteUrl}/images/hero-empowerment.jpg`,
     description: site.description,
     email: contact.email,
+    telephone: contact.phone,
     slogan: site.tagline,
     areaServed: {
       "@type": "Country",
@@ -102,22 +103,25 @@ export function buildOrganizationJsonLd() {
     },
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Masaka District",
+      streetAddress: "Kyebando, Erisa, Kawempe Division",
+      addressLocality: "Kampala",
+      postalCode: "214661",
       addressCountry: "UG",
     },
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer support",
       email: contact.email,
+      telephone: contact.phone,
       availableLanguage: ["English"],
     },
     ...(sameAs.length > 0 ? { sameAs } : {}),
     potentialAction: {
       "@type": "DonateAction",
-      name: "Donate to Seeds of Hope",
+      name: "Support Seeds of Hope",
       target: donateUrl,
       description:
-        "Support child education, sustainable agriculture, and community care across Uganda.",
+        "Support education and skills, sustainable agriculture, and community empowerment across Uganda.",
     },
   };
 }
@@ -134,7 +138,7 @@ export function buildWebsiteJsonLd() {
     inLanguage: "en-UG",
     publisher: {
       "@type": "Organization",
-      name: site.name,
+      name: site.legalName,
       url: siteUrl,
     },
   };
@@ -143,10 +147,13 @@ export function buildWebsiteJsonLd() {
 export function getSiteKeywords(): string[] {
   return [
     "Hafisa Magezi Foundation",
+    "Hafisa Magezi Foundation Limited",
     "Uganda nonprofit",
+    "Kampala",
     "Masaka",
-    "child education",
+    "education and skills Uganda",
     "coffee agriculture Uganda",
+    "livelihoods empowerment",
     "community empowerment",
     "Seeds of Hope",
     "donate Uganda",

@@ -56,7 +56,7 @@ export function Navbar() {
   }
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 48);
+    const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -110,7 +110,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="isolate fixed inset-x-0 top-0 z-[999] overflow-x-clip px-3 pt-3 sm:px-4 sm:pt-4">
+      <header className="isolate fixed inset-x-0 top-0 z-[999] overflow-x-clip px-2 pt-1.5 sm:px-4 sm:pt-2">
         <motion.nav
           animate={{
             backgroundColor: scrolled
@@ -118,16 +118,21 @@ export function Navbar() {
               : "rgba(47, 27, 82, 0.18)",
             borderColor: scrolled
               ? "rgba(197, 155, 39, 0.28)"
-              : "rgba(255, 255, 255, 0.14)",
+              : "rgba(255, 255, 255, 0.1)",
             boxShadow: scrolled
               ? "0 18px 50px -28px rgba(47, 27, 82, 0.55), inset 0 1px 0 rgba(255,255,255,0.12)"
-              : "0 12px 40px -30px rgba(47, 27, 82, 0.25), inset 0 1px 0 rgba(255,255,255,0.18)",
+              : "0 0 0 rgba(0,0,0,0), inset 0 1px 0 rgba(255,255,255,0.1)",
+            borderRadius: scrolled ? 9999 : 16,
           }}
-          transition={{ duration: reduce ? 0 : 0.5, ease }}
-          className="liquid-nav mx-auto max-w-6xl rounded-full border backdrop-blur-2xl"
+          transition={{ duration: reduce ? 0 : 0.45, ease }}
+          className={`liquid-nav mx-auto border backdrop-blur-xl ${
+            scrolled
+              ? "max-w-6xl border backdrop-blur-2xl"
+              : "max-w-7xl border-x-0 border-t-0 border-b"
+          } ${reduce ? "" : "transition-[max-width] duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)]"}`}
           style={{
-            WebkitBackdropFilter: "blur(28px)",
-            backdropFilter: "blur(28px)",
+            WebkitBackdropFilter: scrolled ? "blur(28px)" : "blur(20px)",
+            backdropFilter: scrolled ? "blur(28px)" : "blur(20px)",
           }}
         >
           <div className="flex items-center justify-between gap-2 px-3 py-2 sm:gap-3 sm:px-5 sm:py-2.5 md:px-6">
@@ -139,7 +144,7 @@ export function Navbar() {
               >
                 <motion.span
                   animate={{ scale: scrolled ? 0.94 : 1 }}
-                  transition={{ duration: 0.4, ease }}
+                  transition={{ duration: reduce ? 0 : 0.4, ease }}
                   className="relative block shrink-0 overflow-hidden rounded-full ring-2 ring-gold/40 shadow-[0_0_24px_-6px_rgba(197,155,39,0.5)]"
                 >
                   <Image
@@ -197,21 +202,20 @@ export function Navbar() {
                 href={donateUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="glow-btn inline-flex min-h-9 items-center rounded-full bg-gold px-3 py-1.5 text-xs font-semibold text-purple-deep sm:hidden"
+                className="inline-flex min-h-9 items-center rounded-full bg-gold px-3 py-1.5 text-xs font-semibold text-purple-deep sm:hidden"
               >
-                Donate
+                Support
               </a>
 
               <Magnetic strength={0.22} className="hidden sm:block">
                 <Button
                   href={donateUrl}
                   variant="gold"
-                  className="glow-btn px-5 py-2.5"
-                  heartbeat
+                  className="px-5 py-2.5"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Donate Now
+                  Support the mission
                 </Button>
               </Magnetic>
 
@@ -308,13 +312,12 @@ export function Navbar() {
                 <Button
                   href={donateUrl}
                   variant="gold"
-                  className="glow-btn w-full py-4 text-base"
-                  heartbeat
+                  className="w-full py-4 text-base"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={closeMenu}
                 >
-                  Donate Now
+                  Support the mission
                 </Button>
                 <p className="mt-4 text-center text-xs tracking-[0.2em] text-white/45 uppercase">
                   {site.tagline}

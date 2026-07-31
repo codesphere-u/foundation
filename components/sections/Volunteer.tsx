@@ -63,7 +63,7 @@ export function Volunteer() {
           <Button
             href={`/contact?role=${selected.id}`}
             variant="purple"
-            className="glow-btn mt-8"
+            className="mt-8"
           >
             {volunteer.cta}
           </Button>

@@ -74,12 +74,10 @@ export function ContactSection() {
             <Button
               href={donateUrl}
               variant="gold"
-              className="glow-btn"
-              heartbeat
               target="_blank"
               rel="noopener noreferrer"
             >
-              Donate Now
+              Support the mission
             </Button>
           </div>
         </FadeIn>

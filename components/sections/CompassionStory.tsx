@@ -3,7 +3,6 @@ import { compassion } from "@/lib/content";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { GeometricAccent } from "@/components/motion/GeometricAccent";
 import { Parallax } from "@/components/motion/Parallax";
-import { SeedlingGrow } from "@/components/motion/SeedlingGrow";
 import { CurveDivider } from "@/components/illustrations/Icons";
 
 export function CompassionStory() {
@@ -11,14 +10,14 @@ export function CompassionStory() {
     <section className="relative overflow-hidden bg-lavender/40">
       <CurveDivider className="absolute top-0 left-0 z-10 text-paper" />
       <GeometricAccent />
-      <div className="section-pad relative mx-auto grid max-w-6xl items-center gap-12 px-5 md:grid-cols-12 md:gap-10 md:px-8">
+      <div className="section-pad relative mx-auto grid max-w-6xl items-center gap-10 px-5 md:grid-cols-12 md:gap-12 md:px-8">
         <div className="relative md:col-span-5">
           <FadeIn>
             <Parallax
-              speed={0.32}
-              className="aspect-[4/5] [clip-path:polygon(0%_6%,92%_0%,100%_88%,8%_100%)] md:[clip-path:polygon(2%_4%,96%_0%,100%_92%,4%_100%)]"
+              speed={0.28}
+              className="aspect-[4/5] overflow-hidden rounded-[2rem] rounded-tr-[3rem]"
             >
-              <div className="absolute inset-[-12%]">
+              <div className="absolute inset-0">
                 <Image
                   src={compassion.image}
                   alt={compassion.imageAlt}
@@ -31,22 +30,19 @@ export function CompassionStory() {
             </Parallax>
           </FadeIn>
           <FadeIn
-            delay={0.15}
-            className="absolute -right-2 -bottom-6 w-[48%] overflow-hidden rounded-[1.5rem] rounded-bl-[2.5rem] shadow-2xl md:-right-6"
+            delay={0.12}
+            className="absolute right-3 -bottom-5 w-[42%] overflow-hidden rounded-[1.25rem] shadow-xl md:right-0"
           >
-            <div className="relative aspect-[3/4]">
+            <div className="relative aspect-[4/5]">
               <Image
                 src={compassion.secondaryImage}
                 alt={compassion.secondaryImageAlt}
                 fill
-                className="object-cover object-[50%_20%]"
+                className="object-cover object-[50%_25%]"
                 sizes="30vw"
               />
             </div>
           </FadeIn>
-          <div className="absolute -top-4 left-4">
-            <SeedlingGrow />
-          </div>
         </div>
 
         <div className="md:col-span-7 md:pl-8">

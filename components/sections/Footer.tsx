@@ -104,9 +104,12 @@ export function Footer() {
       </div>
 
       <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 border-t border-white/10 px-5 py-6 text-sm text-white/55 md:flex-row md:items-center md:px-8">
-        <p>
-          © {new Date().getFullYear()} {site.name}. All rights reserved.
-        </p>
+        <div className="space-y-1">
+          <p>
+            © {new Date().getFullYear()} {site.legalName}. All rights reserved.
+          </p>
+          <p className="text-xs text-white/40">{footer.legalLine}</p>
+        </div>
         {liveSocials.length > 0 ? (
           <ul className="flex flex-wrap gap-1">
             {liveSocials.map((social) => (

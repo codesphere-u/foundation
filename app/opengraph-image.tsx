@@ -58,7 +58,7 @@ export default function OpenGraphImage() {
               fontWeight: 500,
             }}
           >
-            Child education · Sustainable agriculture · Community care across Uganda
+            Education & skills · Thriving livelihoods · Community empowerment across Uganda
           </div>
         </div>
 
@@ -72,7 +72,7 @@ export default function OpenGraphImage() {
             color: "rgba(255,255,255,0.7)",
           }}
         >
-          <span>Masaka District, Uganda</span>
+          <span>Kampala · Masaka · Uganda</span>
           <span style={{ color: "#D4B45A", fontWeight: 600 }}>hafisamagezi.org</span>
         </div>
       </div>

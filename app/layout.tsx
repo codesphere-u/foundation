@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   applicationName: site.name,
   authors: [{ name: site.name, url: siteUrl }],
   creator: site.name,
-  publisher: site.name,
+  publisher: site.legalName,
   category: "nonprofit",
   keywords: getSiteKeywords(),
   icons: {
@@ -54,10 +54,10 @@ export const metadata: Metadata = {
     locale: "en_UG",
     images: [
       {
-        url: "/images/grand-opening.jpg",
-        width: 2000,
-        height: 1328,
-        alt: "Hafisa Magezi Foundation grand opening celebration in Masaka, Uganda",
+        url: "/images/hero-empowerment.jpg",
+        width: 1200,
+        height: 630,
+        alt: "People working together with purpose across Uganda’s green hills",
       },
     ],
   },
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: site.title,
     description: site.description,
-    images: ["/images/grand-opening.jpg"],
+    images: ["/images/hero-empowerment.jpg"],
   },
   robots: {
     index: true,
