@@ -47,7 +47,7 @@ export function ImpactCalculator() {
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
               aria-valuetext={`UGX ${amount.toLocaleString()}`}
-              className="h-2 w-full cursor-pointer appearance-none rounded-full bg-purple/15 accent-gold"
+              className="impact-range h-3 w-full cursor-pointer appearance-none rounded-full bg-purple/15 accent-gold"
             />
           </label>
 

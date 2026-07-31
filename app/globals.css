@@ -355,7 +355,39 @@ body::before {
 }
 
 .hero-dot {
-  min-height: 0.5rem;
+  /* Tap target sizing comes from Tailwind min-h-11 / min-w-11 on the button */
+}
+
+.impact-range {
+  touch-action: pan-y;
+}
+
+.impact-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 9999px;
+  background: var(--gold);
+  border: 2px solid var(--purple-deep);
+  box-shadow: 0 2px 8px rgba(47, 27, 82, 0.25);
+  cursor: pointer;
+}
+
+.impact-range::-moz-range-thumb {
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 9999px;
+  background: var(--gold);
+  border: 2px solid var(--purple-deep);
+  box-shadow: 0 2px 8px rgba(47, 27, 82, 0.25);
+  cursor: pointer;
+}
+
+.impact-range::-moz-range-track {
+  height: 0.75rem;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--purple) 15%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

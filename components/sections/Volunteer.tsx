@@ -33,7 +33,7 @@ export function Volunteer() {
         </FadeIn>
         <FadeIn delay={0.08} variant="right">
           <p className="eyebrow">Volunteer</p>
-          <h2 className="mt-3 font-display text-4xl font-semibold text-purple-deep md:text-5xl">
+          <h2 className="mt-3 font-display text-3xl font-semibold text-purple-deep md:text-4xl lg:text-5xl">
             {volunteer.title}
           </h2>
           <p className="luxury-prose mt-4 max-w-xl md:text-lg">{volunteer.body}</p>

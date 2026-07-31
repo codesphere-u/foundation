@@ -23,17 +23,19 @@ export function Footer() {
 
       <div className="relative mx-auto grid max-w-6xl gap-12 px-5 pt-20 pb-10 md:grid-cols-2 md:px-8 lg:grid-cols-4">
         <div className="lg:col-span-2">
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             <Image
               src="/logo.jpg"
               alt={`${site.name} logo`}
               width={56}
               height={56}
-              className="rounded-full ring-2 ring-gold/40"
+              className="shrink-0 rounded-full ring-2 ring-gold/40"
             />
-            <div>
-              <p className="font-display text-2xl font-semibold">{site.name}</p>
-              <p className="text-xs tracking-[0.18em] text-gold-soft uppercase">
+            <div className="min-w-0">
+              <p className="font-display text-xl font-semibold leading-tight break-words sm:text-2xl">
+                {site.name}
+              </p>
+              <p className="mt-0.5 text-xs tracking-[0.18em] text-gold-soft uppercase">
                 {site.tagline}
               </p>
             </div>

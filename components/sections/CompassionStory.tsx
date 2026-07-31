@@ -7,11 +7,11 @@ import { CurveDivider } from "@/components/illustrations/Icons";
 
 export function CompassionStory() {
   return (
-    <section className="relative overflow-hidden bg-lavender/40">
+    <section id="begin" className="relative overflow-hidden bg-lavender/40">
       <CurveDivider className="absolute top-0 left-0 z-10 text-paper" />
       <GeometricAccent />
       <div className="section-pad relative mx-auto grid max-w-6xl items-center gap-10 px-5 md:grid-cols-12 md:gap-12 md:px-8">
-        <div className="relative md:col-span-5">
+        <div className="relative pb-10 md:col-span-5 md:pb-8">
           <FadeIn>
             <Parallax
               speed={0.28}

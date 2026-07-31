@@ -1,25 +1,38 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { BirdIcon, LeafIcon } from "@/components/illustrations/Icons";
 
 export function AmbientSky({ dense = false }: { dense?: boolean }) {
   const reduce = useReducedMotion();
+  const [lite, setLite] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px), (pointer: coarse)");
+    const update = () => setLite(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
   if (reduce) return null;
 
-  const birds = dense ? [0, 1, 2] : [0, 1];
-  const particles = dense ? 14 : 8;
+  const birds = lite ? [0] : dense ? [0, 1, 2] : [0, 1];
+  const particles = lite ? 4 : dense ? 14 : 8;
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-      <div className="light-rays" />
+      <div className={`light-rays ${lite ? "opacity-50" : ""}`} />
       <div
         className="animate-cloud absolute top-[12%] left-[-10%] h-24 w-[40%] rounded-full bg-white/10 blur-2xl"
       />
-      <div
-        className="animate-cloud absolute top-[22%] right-[-5%] h-16 w-[28%] rounded-full bg-white/8 blur-2xl"
-        style={{ animationDelay: "4s" }}
-      />
+      {!lite ? (
+        <div
+          className="animate-cloud absolute top-[22%] right-[-5%] h-16 w-[28%] rounded-full bg-white/8 blur-2xl"
+          style={{ animationDelay: "4s" }}
+        />
+      ) : null}
 
       {birds.map((i) => (
         <div
@@ -51,9 +64,11 @@ export function AmbientSky({ dense = false }: { dense?: boolean }) {
       <div className="animate-leaf absolute top-[35%] right-[8%] opacity-50">
         <LeafIcon className="h-7 w-7" />
       </div>
-      <div className="animate-leaf absolute bottom-[28%] left-[6%] opacity-40" style={{ animationDelay: "2s" }}>
-        <LeafIcon className="h-6 w-6" />
-      </div>
+      {!lite ? (
+        <div className="animate-leaf absolute bottom-[28%] left-[6%] opacity-40" style={{ animationDelay: "2s" }}>
+          <LeafIcon className="h-6 w-6" />
+        </div>
+      ) : null}
     </div>
   );
 }

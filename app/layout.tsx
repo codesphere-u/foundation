@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { SiteShell } from "@/components/SiteShell";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -23,6 +23,13 @@ const siteUrl = getSiteUrl();
 const googleVerification =
   process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
   process.env.GOOGLE_SITE_VERIFICATION;
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#4a2e80",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

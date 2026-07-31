@@ -63,9 +63,26 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      return;
+    }
+
+    const scrollY = window.scrollY;
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+
     return () => {
       document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      window.scrollTo(0, scrollY);
     };
   }, [open]);
 
@@ -110,7 +127,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="isolate fixed inset-x-0 top-0 z-[999] overflow-x-clip px-2 pt-1.5 sm:px-4 sm:pt-2">
+      <header className="isolate fixed inset-x-0 top-0 z-[999] overflow-x-clip px-2 pt-[max(0.375rem,env(safe-area-inset-top))] sm:px-4">
         <motion.nav
           animate={{
             backgroundColor: scrolled
@@ -202,7 +219,7 @@ export function Navbar() {
                 href={donateUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-9 items-center rounded-full bg-gold px-3 py-1.5 text-xs font-semibold text-purple-deep sm:hidden"
+                className="inline-flex min-h-11 items-center rounded-full bg-gold px-3.5 py-2 text-xs font-semibold text-purple-deep sm:hidden"
               >
                 Support
               </a>
@@ -279,7 +296,7 @@ export function Navbar() {
             <div className="geometric-wash opacity-[0.07]" />
 
             <motion.div
-              className="relative z-10 flex h-full flex-col px-6 pt-28 pb-8"
+              className="relative z-10 flex h-full flex-col px-6 pt-[max(7rem,calc(env(safe-area-inset-top)+5.5rem))] pb-[max(2rem,env(safe-area-inset-bottom))]"
               variants={menuContainer}
               initial="closed"
               animate="open"

@@ -57,7 +57,7 @@ export function ProgramPillars() {
                 <p className="mt-4 text-xs font-semibold tracking-[0.18em] text-gold uppercase">
                   {area.accent}
                 </p>
-                <h2 className="mt-3 font-display text-4xl font-semibold text-purple-deep md:text-5xl">
+                <h2 className="mt-3 font-display text-3xl font-semibold text-purple-deep md:text-4xl lg:text-5xl">
                   {area.title}
                 </h2>
                 <p className="luxury-prose mt-5 md:text-lg">{area.description}</p>

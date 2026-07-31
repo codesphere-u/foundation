@@ -9,28 +9,30 @@ import { FadeIn } from "@/components/ui/FadeIn";
 type GalleryItem = (typeof homeGallery)[number];
 
 const sizeClass: Record<GalleryItem["size"], string> = {
-  wide: "h-56 w-[22rem] sm:h-72 sm:w-[30rem] md:h-80 md:w-[34rem]",
-  tall: "h-64 w-56 sm:h-80 sm:w-64 md:h-[22rem] md:w-72",
-  square: "h-56 w-56 sm:h-72 sm:w-72 md:h-80 md:w-80",
+  wide: "h-48 w-[16rem] sm:h-72 sm:w-[30rem] md:h-80 md:w-[34rem]",
+  tall: "h-52 w-44 sm:h-80 sm:w-64 md:h-[22rem] md:w-72",
+  square: "h-48 w-48 sm:h-72 sm:w-72 md:h-80 md:w-80",
 };
 
 function GalleryCard({
   item,
   index,
   paused,
+  reduceMotion,
 }: {
   item: GalleryItem;
   index: number;
   paused: boolean;
+  reduceMotion?: boolean;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotion() || reduceMotion;
   const riseAmount = 22 + (index % 4) * 8;
   const riseDuration = 3.4 + (index % 5) * 0.5;
   const riseDelay = (index % 7) * 0.4;
 
   return (
     <motion.li
-      className={`group relative shrink-0 overflow-hidden rounded-[1.75rem] shadow-[0_20px_50px_-28px_rgba(47,27,82,0.55)] ring-1 ring-purple/10 ${sizeClass[item.size]}`}
+      className={`group relative shrink-0 overflow-hidden rounded-[1.75rem] shadow-[0_20px_50px_-28px_rgba(47,27,82,0.55)] ring-1 ring-purple/10 snap-center ${sizeClass[item.size]}`}
       style={{ borderRadius: index % 3 === 0 ? "1.75rem 1.75rem 2.75rem 1.75rem" : undefined }}
       animate={
         reduce
@@ -87,25 +89,14 @@ function MarqueeRow({
   duration: number;
   paused: boolean;
 }) {
-  const reduce = useReducedMotion();
   const loop = useMemo(() => [...items, ...items], [items]);
   const from = direction === "left" ? "0%" : "-50%";
   const to = direction === "left" ? "-50%" : "0%";
 
-  if (reduce) {
-    return (
-      <ul className="flex w-max gap-4 px-5 md:gap-6 md:px-8">
-        {items.map((item, i) => (
-          <GalleryCard key={`${item.src}-static-${i}`} item={item} index={i} paused />
-        ))}
-      </ul>
-    );
-  }
-
   return (
-    <div className="overflow-hidden py-6 md:py-8">
+    <div className="overflow-hidden py-4 md:py-8">
       <motion.ul
-        className="flex w-max items-end gap-4 px-5 md:gap-6 md:px-8"
+        className="flex w-max items-end gap-3 px-5 sm:gap-4 md:gap-6 md:px-8"
         animate={paused ? undefined : { x: [from, to] }}
         transition={{
           x: {
@@ -129,6 +120,22 @@ function MarqueeRow({
   );
 }
 
+function ScrollGallery({ items }: { items: GalleryItem[] }) {
+  return (
+    <ul className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-3 md:gap-6 md:px-8">
+      {items.map((item, i) => (
+        <GalleryCard
+          key={`${item.src}-scroll-${i}`}
+          item={item}
+          index={i}
+          paused
+          reduceMotion
+        />
+      ))}
+    </ul>
+  );
+}
+
 export function PhotoRiver() {
   const [paused, setPaused] = useState(false);
   const reduce = useReducedMotion();
@@ -141,6 +148,9 @@ export function PhotoRiver() {
       className="relative overflow-hidden bg-gradient-to-b from-paper via-lavender/30 to-paper py-[var(--section-space)]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onPointerDown={() => setPaused(true)}
+      onPointerUp={() => setPaused(false)}
+      onPointerCancel={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setPaused(false);
@@ -166,15 +176,20 @@ export function PhotoRiver() {
       </FadeIn>
 
       <div className="relative mt-10 md:mt-12">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-paper to-transparent sm:w-16" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-paper to-transparent sm:w-16" />
-
-        <MarqueeRow items={rowA} direction="left" duration={reduce ? 0 : 48} paused={paused} />
-        <MarqueeRow items={rowB} direction="right" duration={reduce ? 0 : 56} paused={paused} />
+        {!reduce ? (
+          <>
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-paper to-transparent sm:w-16" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-paper to-transparent sm:w-16" />
+            <MarqueeRow items={rowA} direction="left" duration={48} paused={paused} />
+            <MarqueeRow items={rowB} direction="right" duration={56} paused={paused} />
+          </>
+        ) : (
+          <ScrollGallery items={homeGallery} />
+        )}
       </div>
 
       <p className="mt-6 text-center text-xs tracking-[0.16em] text-muted uppercase">
-        Hover to pause · Rising as they move
+        {reduce ? "Swipe to explore · Field moments + living programmes" : "Tap or hover to pause · Rising as they move"}
       </p>
     </section>
   );

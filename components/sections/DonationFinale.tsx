@@ -62,7 +62,7 @@ export function DonationFinale() {
         </FadeIn>
 
         <FadeIn delay={0.08} className="mt-12 overflow-hidden rounded-[2rem]">
-          <div className="relative aspect-[21/9] min-h-[12rem] sm:min-h-[14rem]">
+          <div className="relative aspect-[16/10] min-h-[12rem] sm:aspect-[21/9] sm:min-h-[14rem]">
             <Image
               src={donation.backgroundImage}
               alt={donation.backgroundImageAlt}
@@ -133,48 +133,54 @@ export function DonationFinale() {
               </motion.p>
             </AnimatePresence>
 
-            <ul className="mt-8 grid grid-cols-3 gap-4 border-t border-gold/25 pt-8">
-              <li className="text-center">
-                <ButterflyIcon className="mx-auto h-8 w-8" />
-                <AnimatePresence mode="wait">
-                  <motion.p
-                    key={`k-${amount.id}`}
-                    initial={reduce ? false : { opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-2 font-display text-2xl font-semibold text-purple sm:text-3xl"
-                  >
-                    {formatImpact(impact.kits)}
-                  </motion.p>
-                </AnimatePresence>
-                <p className="mt-1 text-xs text-muted">Learning kits</p>
+            <ul className="mt-8 grid grid-cols-1 gap-6 border-t border-gold/25 pt-8 sm:grid-cols-3 sm:gap-4">
+              <li className="flex items-center gap-4 text-left sm:flex-col sm:items-center sm:text-center">
+                <ButterflyIcon className="h-8 w-8 shrink-0" />
+                <div>
+                  <AnimatePresence mode="wait">
+                    <motion.p
+                      key={`k-${amount.id}`}
+                      initial={reduce ? false : { opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="font-display text-2xl font-semibold text-purple sm:mt-2 sm:text-3xl"
+                    >
+                      {formatImpact(impact.kits)}
+                    </motion.p>
+                  </AnimatePresence>
+                  <p className="mt-0.5 text-xs text-muted sm:mt-1">Learning kits</p>
+                </div>
               </li>
-              <li className="text-center">
-                <SeedlingIcon className="mx-auto h-8 w-8" />
-                <AnimatePresence mode="wait">
-                  <motion.p
-                    key={`s-${amount.id}`}
-                    initial={reduce ? false : { opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-2 font-display text-2xl font-semibold text-purple sm:text-3xl"
-                  >
-                    {formatImpact(impact.seedlings)}
-                  </motion.p>
-                </AnimatePresence>
-                <p className="mt-1 text-xs text-muted">Coffee seedlings</p>
+              <li className="flex items-center gap-4 text-left sm:flex-col sm:items-center sm:text-center">
+                <SeedlingIcon className="h-8 w-8 shrink-0" />
+                <div>
+                  <AnimatePresence mode="wait">
+                    <motion.p
+                      key={`s-${amount.id}`}
+                      initial={reduce ? false : { opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="font-display text-2xl font-semibold text-purple sm:mt-2 sm:text-3xl"
+                    >
+                      {formatImpact(impact.seedlings)}
+                    </motion.p>
+                  </AnimatePresence>
+                  <p className="mt-0.5 text-xs text-muted sm:mt-1">Coffee seedlings</p>
+                </div>
               </li>
-              <li className="text-center">
-                <GeometricStar className="mx-auto h-8 w-8 text-gold" />
-                <AnimatePresence mode="wait">
-                  <motion.p
-                    key={`d-${amount.id}`}
-                    initial={reduce ? false : { opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-2 font-display text-2xl font-semibold text-purple sm:text-3xl"
-                  >
-                    {formatImpact(impact.days)}
-                  </motion.p>
-                </AnimatePresence>
-                <p className="mt-1 text-xs text-muted">Outreach days</p>
+              <li className="flex items-center gap-4 text-left sm:flex-col sm:items-center sm:text-center">
+                <GeometricStar className="h-8 w-8 shrink-0 text-gold" />
+                <div>
+                  <AnimatePresence mode="wait">
+                    <motion.p
+                      key={`d-${amount.id}`}
+                      initial={reduce ? false : { opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="font-display text-2xl font-semibold text-purple sm:mt-2 sm:text-3xl"
+                    >
+                      {formatImpact(impact.days)}
+                    </motion.p>
+                  </AnimatePresence>
+                  <p className="mt-0.5 text-xs text-muted sm:mt-1">Outreach days</p>
+                </div>
               </li>
             </ul>
 
@@ -182,7 +188,7 @@ export function DonationFinale() {
               <Button
                 href={ctaHref}
                 variant="gold"
-                className="px-10"
+                className="w-full px-10 sm:w-auto"
                 target="_blank"
                 rel="noopener noreferrer"
               >
