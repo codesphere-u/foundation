@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
-import { contact, donateUrl, footer, site } from "@/lib/content";
+import {
+  contact,
+  donateUrl,
+  footer,
+  navLinks,
+  pages,
+  programmeAreas,
+  site,
+} from "@/lib/content";
 
 const DEFAULT_SITE_URL = "https://hafisamagezi.org";
 
@@ -7,6 +15,12 @@ export function getSiteUrl(): string {
   const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
   if (!raw) return DEFAULT_SITE_URL;
   return raw.replace(/\/$/, "");
+}
+
+export function absoluteUrl(path: string): string {
+  const siteUrl = getSiteUrl();
+  if (!path || path === "/") return siteUrl;
+  return `${siteUrl}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
 export type PageOgImage = {
@@ -25,6 +39,84 @@ export type PageMetadataInput = {
   image?: PageOgImage;
   noIndex?: boolean;
 };
+
+export type SiteRoute = {
+  path: "/" | "/about" | "/programs" | "/contact";
+  priority: number;
+  changeFrequency: "weekly" | "monthly";
+  title: string;
+  description: string;
+  ogImage: string;
+  ogImageAlt: string;
+  /** Extra content images for the image sitemap */
+  sitemapImages?: string[];
+  pageType: "WebPage" | "AboutPage" | "ContactPage" | "CollectionPage";
+  breadcrumbLabel: string;
+};
+
+export const siteRoutes: SiteRoute[] = [
+  {
+    path: "/",
+    priority: 1,
+    changeFrequency: "weekly",
+    title: pages.home.title,
+    description: pages.home.description,
+    ogImage: pages.home.ogImage,
+    ogImageAlt: pages.home.ogImageAlt,
+    sitemapImages: [
+      pages.home.ogImage,
+      "/images/empower-learners.jpg",
+      "/images/coffee-seedlings-tray.jpg",
+      "/images/community-solidarity.jpg",
+    ],
+    pageType: "WebPage",
+    breadcrumbLabel: "Home",
+  },
+  {
+    path: "/about",
+    priority: 0.8,
+    changeFrequency: "monthly",
+    title: pages.about.title,
+    description: pages.about.description,
+    ogImage: pages.about.ogImage,
+    ogImageAlt: pages.about.ogImageAlt,
+    sitemapImages: [pages.about.ogImage],
+    pageType: "AboutPage",
+    breadcrumbLabel: "About",
+  },
+  {
+    path: "/programs",
+    priority: 0.9,
+    changeFrequency: "monthly",
+    title: pages.programs.title,
+    description: pages.programs.description,
+    ogImage: pages.programs.ogImage,
+    ogImageAlt: pages.programs.ogImageAlt,
+    sitemapImages: [
+      pages.programs.ogImage,
+      ...programmeAreas.slice(0, 3).map((p) => p.image),
+    ],
+    pageType: "CollectionPage",
+    breadcrumbLabel: "Programs",
+  },
+  {
+    path: "/contact",
+    priority: 0.7,
+    changeFrequency: "monthly",
+    title: pages.contact.title,
+    description: pages.contact.description,
+    ogImage: pages.contact.ogImage,
+    ogImageAlt: pages.contact.ogImageAlt,
+    sitemapImages: [pages.contact.ogImage],
+    pageType: "ContactPage",
+    breadcrumbLabel: "Contact",
+  },
+];
+
+export function getSiteRoute(path: string): SiteRoute {
+  const normalized = path === "/" ? "/" : path.replace(/\/$/, "");
+  return siteRoutes.find((r) => r.path === normalized) ?? siteRoutes[0];
+}
 
 const defaultOgImage: PageOgImage = {
   url: "/images/hero-empowerment.jpg",
@@ -79,6 +171,9 @@ export function pageMetadata({
   };
 }
 
+const ORG_ID = () => `${getSiteUrl()}/#organization`;
+const WEBSITE_ID = () => `${getSiteUrl()}/#website`;
+
 export function buildOrganizationJsonLd() {
   const siteUrl = getSiteUrl();
   const sameAs = footer.socials
@@ -86,8 +181,8 @@ export function buildOrganizationJsonLd() {
     .map((s) => s.href);
 
   return {
-    "@context": "https://schema.org",
     "@type": ["NGO", "Organization"],
+    "@id": ORG_ID(),
     name: site.legalName,
     alternateName: [site.name, site.shortName],
     url: siteUrl,
@@ -114,6 +209,7 @@ export function buildOrganizationJsonLd() {
       email: contact.email,
       telephone: contact.phone,
       availableLanguage: ["English"],
+      areaServed: "UG",
     },
     ...(sameAs.length > 0 ? { sameAs } : {}),
     potentialAction: {
@@ -130,17 +226,106 @@ export function buildWebsiteJsonLd() {
   const siteUrl = getSiteUrl();
 
   return {
-    "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": WEBSITE_ID(),
     name: site.name,
     url: siteUrl,
     description: site.description,
     inLanguage: "en-UG",
-    publisher: {
-      "@type": "Organization",
-      name: site.legalName,
-      url: siteUrl,
+    publisher: { "@id": ORG_ID() },
+  };
+}
+
+export function buildNavigationJsonLd() {
+  const siteUrl = getSiteUrl();
+
+  return {
+    "@type": "ItemList",
+    "@id": `${siteUrl}/#navigation`,
+    name: "Main navigation",
+    numberOfItems: navLinks.length,
+    itemListElement: navLinks.map((link, index) => ({
+      "@type": "SiteNavigationElement",
+      position: index + 1,
+      name: link.label,
+      url: absoluteUrl(link.href),
+    })),
+  };
+}
+
+export function buildWebPageJsonLd(path: string) {
+  const route = getSiteRoute(path);
+  const url = absoluteUrl(route.path);
+
+  return {
+    "@type": route.pageType,
+    "@id": `${url}#webpage`,
+    url,
+    name: route.title,
+    description: route.description,
+    inLanguage: "en-UG",
+    isPartOf: { "@id": WEBSITE_ID() },
+    about: { "@id": ORG_ID() },
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      url: absoluteUrl(route.ogImage),
+      caption: route.ogImageAlt,
     },
+  };
+}
+
+export function buildBreadcrumbJsonLd(path: string) {
+  const route = getSiteRoute(path);
+  const siteUrl = getSiteUrl();
+  const items =
+    route.path === "/"
+      ? [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: siteUrl,
+          },
+        ]
+      : [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: siteUrl,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: route.breadcrumbLabel,
+            item: absoluteUrl(route.path),
+          },
+        ];
+
+  return {
+    "@type": "BreadcrumbList",
+    "@id": `${absoluteUrl(route.path)}#breadcrumb`,
+    itemListElement: items,
+  };
+}
+
+/** Site-wide Organization + WebSite + navigation graph for the root layout. */
+export function buildSiteJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      buildOrganizationJsonLd(),
+      buildWebsiteJsonLd(),
+      buildNavigationJsonLd(),
+    ],
+  };
+}
+
+/** Per-page WebPage + BreadcrumbList graph. */
+export function buildPageJsonLd(path: string) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [buildWebPageJsonLd(path), buildBreadcrumbJsonLd(path)],
   };
 }
 
@@ -149,13 +334,20 @@ export function getSiteKeywords(): string[] {
     "Hafisa Magezi Foundation",
     "Hafisa Magezi Foundation Limited",
     "Uganda nonprofit",
+    "nonprofit Uganda",
     "Kampala",
+    "Kawempe",
+    "Kyebando",
     "Masaka",
     "education and skills Uganda",
     "coffee agriculture Uganda",
+    "coffee seedlings Uganda",
     "livelihoods empowerment",
-    "community empowerment",
+    "community empowerment Uganda",
+    "health and wellbeing Uganda",
+    "environment resilience Uganda",
     "Seeds of Hope",
     "donate Uganda",
+    "volunteer Uganda",
   ];
 }

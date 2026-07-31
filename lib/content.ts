@@ -3,9 +3,9 @@ export const site = {
   legalName: "Hafisa Magezi Foundation Limited",
   shortName: "Hafisa Magezi",
   tagline: "SIP. SUPPORT. EMPOWER.",
-  title: "Hafisa Magezi Foundation — Empowering Lives Across Uganda",
+  title: "Hafisa Magezi Foundation | Empower Uganda",
   description:
-    "Hafisa Magezi Foundation Limited empowers people across Uganda through education and skills, livelihoods and sustainable agriculture, health and wellbeing, environmental resilience, and partnerships built on dignity.",
+    "Uganda nonprofit empowering communities through education & skills, livelihoods and coffee agriculture, health, environment, and partnerships—from Kampala and Masaka.",
 };
 
 export const navLinks = [
@@ -19,29 +19,30 @@ export const donateUrl = "https://www.raiseug.com/give/the-seeds-of-hope";
 
 export const pages = {
   home: {
-    title: "Hafisa Magezi Foundation — Empowering Lives Across Uganda",
-    description: site.description,
+    title: "Hafisa Magezi Foundation | Empower Uganda",
+    description:
+      "Join Hafisa Magezi Foundation Limited in empowering lives across Uganda—education and skills, sustainable coffee livelihoods, health, resilience, and dignity-led partnerships.",
     ogImage: "/images/hero-empowerment.jpg",
     ogImageAlt: "People working together with purpose across Uganda’s green hills",
   },
   about: {
-    title: "About Hafisa Magezi Foundation | Leadership & Story",
+    title: "About Us | Leadership & Story | Hafisa Magezi",
     description:
-      "Meet Hafisa Magezi Foundation Limited—our story, leadership, partners, and programmes empowering communities from Kampala and Masaka across Uganda.",
+      "Discover Hafisa Magezi Foundation Limited—our story, leadership, partners, and programmes empowering communities from Kampala’s Kawempe to Masaka across Uganda.",
     ogImage: "/images/community-solidarity.jpg",
     ogImageAlt: "Community partners learning and serving together in Uganda",
   },
   programs: {
-    title: "Programs | Skills, Livelihoods, Health & Empowerment",
+    title: "Programs | Skills, Livelihoods & Health Uganda",
     description:
-      "Explore six programmes of lasting change: care and dignity, education and skills, livelihoods and agriculture, health and wellbeing, environment and resilience, and partnerships.",
+      "Explore six programmes: care and dignity, education and skills, livelihoods and coffee agriculture, health and wellbeing, environment and resilience, and partnerships.",
     ogImage: "/images/empower-learners.jpg",
     ogImageAlt: "Learners building skills and confidence in Uganda",
   },
   contact: {
-    title: "Contact Hafisa Magezi Foundation | Kampala, Uganda",
+    title: "Contact | Kampala Office | Hafisa Magezi",
     description:
-      "Partner, volunteer, or ask how to support. Contact Hafisa Magezi Foundation Limited in Kampala—hello@hafisamagezi.org · +256 775 721 332.",
+      "Partner, volunteer, or support Seeds of Hope. Reach Hafisa Magezi Foundation Limited in Kyebando, Kampala—hello@hafisamagezi.org · +256 775 721 332.",
     ogImage: "/images/coffee-seedlings-tray.jpg",
     ogImageAlt: "Healthy coffee seedlings ready for distribution",
   },

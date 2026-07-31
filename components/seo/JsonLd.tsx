@@ -1,7 +1,7 @@
-import { buildOrganizationJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
+import { buildSiteJsonLd } from "@/lib/seo";
 
 export function JsonLd() {
-  const graph = [buildOrganizationJsonLd(), buildWebsiteJsonLd()];
+  const graph = buildSiteJsonLd();
 
   return (
     <script

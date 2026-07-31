@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { PageJsonLd } from "@/components/seo/PageJsonLd";
 import { PageHero } from "@/components/ui/PageHero";
 import { pageHeroes, pages } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
@@ -19,6 +20,7 @@ export default function ContactPage() {
 
   return (
     <>
+      <PageJsonLd path="/contact" />
       <PageHero
         eyebrow={hero.eyebrow}
         title={hero.title}

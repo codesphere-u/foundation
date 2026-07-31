@@ -4,6 +4,7 @@ import { Story } from "@/components/sections/Story";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { LivingTimeline } from "@/components/sections/LivingTimeline";
 import { UgandaMap } from "@/components/sections/UgandaMap";
+import { PageJsonLd } from "@/components/seo/PageJsonLd";
 import { PageHero } from "@/components/ui/PageHero";
 import { pageHeroes, pages } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
@@ -23,6 +24,7 @@ export default function AboutPage() {
 
   return (
     <>
+      <PageJsonLd path="/about" />
       <PageHero
         eyebrow={hero.eyebrow}
         title={hero.title}

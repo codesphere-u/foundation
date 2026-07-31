@@ -89,7 +89,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${manrope.variable} h-full antialiased`}>
+    <html lang="en-UG" className={`${cormorant.variable} ${manrope.variable} h-full antialiased`}>
       <body className="min-h-full font-sans text-ink antialiased">
         <JsonLd />
         <a

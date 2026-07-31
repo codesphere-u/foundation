@@ -1,6 +1,7 @@
 import { ImpactCalculator } from "@/components/sections/ImpactCalculator";
 import { ProgramPillars } from "@/components/sections/ProgramPillars";
 import { Volunteer } from "@/components/sections/Volunteer";
+import { PageJsonLd } from "@/components/seo/PageJsonLd";
 import { PageHero } from "@/components/ui/PageHero";
 import { pageHeroes, pages } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
@@ -20,6 +21,7 @@ export default function ProgramsPage() {
 
   return (
     <>
+      <PageJsonLd path="/programs" />
       <PageHero
         eyebrow={hero.eyebrow}
         title={hero.title}
