@@ -215,22 +215,18 @@ export function Navbar() {
             <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
               <ScrollPercentBadge className="hidden sm:inline-block" />
 
-              <a
+              <Link
                 href={donateUrl}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="inline-flex min-h-11 items-center rounded-full bg-gold px-3.5 py-2 text-xs font-semibold text-purple-deep sm:hidden"
               >
                 Support
-              </a>
+              </Link>
 
               <Magnetic strength={0.22} className="hidden sm:block">
                 <Button
                   href={donateUrl}
                   variant="gold"
                   className="px-5 py-2.5"
-                  target="_blank"
-                  rel="noopener noreferrer"
                 >
                   Support the mission
                 </Button>
@@ -330,8 +326,6 @@ export function Navbar() {
                   href={donateUrl}
                   variant="gold"
                   className="w-full py-4 text-base"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   onClick={closeMenu}
                 >
                   Support the mission

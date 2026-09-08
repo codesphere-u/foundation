@@ -41,7 +41,7 @@ export type PageMetadataInput = {
 };
 
 export type SiteRoute = {
-  path: "/" | "/about" | "/programs" | "/contact";
+  path: "/" | "/about" | "/programs" | "/contact" | "/donate";
   priority: number;
   changeFrequency: "weekly" | "monthly";
   title: string;
@@ -110,6 +110,19 @@ export const siteRoutes: SiteRoute[] = [
     sitemapImages: [pages.contact.ogImage],
     pageType: "ContactPage",
     breadcrumbLabel: "Contact",
+  },
+  {
+    path: "/donate",
+    priority: 0.9,
+    changeFrequency: "weekly",
+    title: "Sponsor & Donate | Elderly Outreach Masaka | Hafisa Magezi Foundation",
+    description:
+      "Securely sponsor an elderly person in Kiyimbwe Village, Masaka with Hafisa Magezi Foundation Limited via Pesapal API 3.0.",
+    ogImage: "/images/community-solidarity.jpg",
+    ogImageAlt: "Community members gathered together in Uganda",
+    sitemapImages: ["/images/community-solidarity.jpg"],
+    pageType: "WebPage",
+    breadcrumbLabel: "Donate",
   },
 ];
 
@@ -214,10 +227,10 @@ export function buildOrganizationJsonLd() {
     ...(sameAs.length > 0 ? { sameAs } : {}),
     potentialAction: {
       "@type": "DonateAction",
-      name: "Support Seeds of Hope",
-      target: donateUrl,
+      name: "Elderly Outreach Sponsorship & Community Support",
+      target: donateUrl.startsWith("http") ? donateUrl : `${siteUrl}${donateUrl.startsWith("/") ? "" : "/"}${donateUrl}`,
       description:
-        "Support education and skills, sustainable agriculture, and community empowerment across Uganda.",
+        "Sponsor the elderly and support education, agriculture, and community empowerment across Uganda.",
     },
   };
 }

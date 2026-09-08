@@ -15,7 +15,7 @@ export const navLinks = [
   { href: "/contact", label: "Contact" },
 ] as const;
 
-export const donateUrl = "https://www.raiseug.com/give/the-seeds-of-hope";
+export const donateUrl = "/#donate";
 
 export const pages = {
   home: {
@@ -69,7 +69,7 @@ export const hero = {
   headline: "Empowering People Who Rise—and Lift Others",
   subtitle:
     "Education and skills, thriving coffee livelihoods, and community strength—growing opportunity from Kampala and Masaka across Uganda.",
-  primaryCta: { href: donateUrl, label: "Support the mission", external: true },
+  primaryCta: { href: donateUrl, label: "Support the mission", external: false },
   secondaryCta: { href: "/programs", label: "Explore Our Work" },
   backgroundImage: "/images/hero-empowerment.jpg",
   slides: [
@@ -739,7 +739,7 @@ export const footer = {
     { href: "/about", label: "About" },
     { href: "/programs", label: "Programs" },
     { href: "/contact", label: "Contact" },
-    { href: donateUrl, label: "Support the mission", external: true },
+    { href: donateUrl, label: "Support the mission", external: false },
   ],
   socials: [] as { label: string; href: string; placeholder?: boolean }[],
 };

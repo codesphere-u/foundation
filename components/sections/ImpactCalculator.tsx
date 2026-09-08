@@ -76,8 +76,6 @@ export function ImpactCalculator() {
             <Button
               href={donateUrl}
               variant="gold"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               Invest now
             </Button>

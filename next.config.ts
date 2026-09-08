@@ -6,7 +6,12 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=()",
+    value: "camera=(), microphone=(), geolocation=(), payment=(self \"https://pay.pesapal.com\" \"https://cybqa.pesapal.com\")",
+  },
+  {
+    key: "Content-Security-Policy",
+    value:
+      "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https://pay.pesapal.com https://cybqa.pesapal.com; frame-src 'self' https://pay.pesapal.com https://cybqa.pesapal.com; base-uri 'self'; form-action 'self';",
   },
 ];
 

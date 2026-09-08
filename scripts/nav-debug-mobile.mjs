@@ -16,7 +16,7 @@ const state = await page.evaluate(() => {
   const panel = document.getElementById("mobile-nav");
   const cs = panel ? getComputedStyle(panel) : null;
   const header = document.querySelector("header");
-  const donate = document.querySelector('header a[href*="raiseug"]');
+  const donate = document.querySelector('header a[href*="donate"]');
   return {
     hamburgerExists: !!btn,
     hamburgerLabel: btn?.getAttribute("aria-label"),

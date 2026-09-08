@@ -1,7 +1,7 @@
 import { buildPageJsonLd } from "@/lib/seo";
 
 type PageJsonLdProps = {
-  path: "/" | "/about" | "/programs" | "/contact";
+  path: "/" | "/about" | "/programs" | "/contact" | "/donate";
 };
 
 export function PageJsonLd({ path }: PageJsonLdProps) {

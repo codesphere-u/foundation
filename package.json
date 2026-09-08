@@ -7,7 +7,9 @@
     "dev:webpack": "next dev --webpack --hostname 0.0.0.0 --port 3000",
     "build": "next build",
     "start": "next start --hostname 0.0.0.0 --port 3000",
-    "lint": "eslint"
+    "lint": "eslint app components lib",
+    "test": "node scripts/test-unit.mjs && node scripts/test-pesapal.mjs",
+    "register-ipn": "node scripts/register-ipn.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.42.2",

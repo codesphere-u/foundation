@@ -74,8 +74,6 @@ export function ContactSection() {
             <Button
               href={donateUrl}
               variant="gold"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               Support the mission
             </Button>

@@ -31,7 +31,7 @@ export function Hero() {
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(0);
   const resumeTimer = useRef<number | null>(null);
-  const slideStarted = useRef(performance.now());
+  const slideStarted = useRef(0);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
