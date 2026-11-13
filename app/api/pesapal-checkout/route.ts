@@ -48,6 +48,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const contentLength = Number(req.headers.get("content-length") || "0");
+  if (Number.isFinite(contentLength) && contentLength > 16_384) {
+    return NextResponse.json(
+      { success: false, error: "Request payload is too large." },
+      { status: 413 }
+    );
+  }
+
   let body: unknown;
   try {
     body = await req.json();
@@ -58,7 +66,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (!body || typeof body !== "object") {
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
     return NextResponse.json(
       { success: false, error: "Request payload must be a JSON object." },
       { status: 400 }

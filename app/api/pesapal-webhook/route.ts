@@ -2,22 +2,58 @@ import { NextRequest, NextResponse } from "next/server";
 import { getPesapalTransactionStatus } from "@/lib/pesapal";
 import { paymentStore, PaymentStatus } from "@/lib/payment-store";
 
-export async function GET(req: NextRequest) {
+async function extractIpnParams(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
-  const orderTrackingId = searchParams.get("OrderTrackingId");
-  const orderNotificationType = searchParams.get("OrderNotificationType");
-  const orderMerchantReference = searchParams.get("OrderMerchantReference");
+  let orderTrackingId = searchParams.get("OrderTrackingId")?.trim() || "";
+  let orderNotificationType = searchParams.get("OrderNotificationType")?.trim() || "";
+  let orderMerchantReference = searchParams.get("OrderMerchantReference")?.trim() || null;
+
+  if ((!orderTrackingId || !orderNotificationType) && req.method === "POST") {
+    const contentType = req.headers.get("content-type")?.toLowerCase() || "";
+    if (contentType.includes("application/json")) {
+      try {
+        const body = (await req.json()) as Record<string, unknown>;
+        if (body && typeof body === "object" && !Array.isArray(body)) {
+          if (!orderTrackingId && typeof body.OrderTrackingId === "string") {
+            orderTrackingId = body.OrderTrackingId.trim();
+          }
+          if (!orderNotificationType && typeof body.OrderNotificationType === "string") {
+            orderNotificationType = body.OrderNotificationType.trim();
+          }
+          if (!orderMerchantReference && typeof body.OrderMerchantReference === "string") {
+            orderMerchantReference = body.OrderMerchantReference.trim() || null;
+          }
+        }
+      } catch {
+        // Fall through to standard missing-parameter validation below
+      }
+    }
+  }
+
+  return { orderTrackingId, orderNotificationType, orderMerchantReference };
+}
+
+async function handleIpn(req: NextRequest) {
+  const { orderTrackingId, orderNotificationType, orderMerchantReference } =
+    await extractIpnParams(req);
 
   console.info(
     `[Pesapal IPN] Notification received: type=${orderNotificationType}, trackingId=${orderTrackingId}, ref=${orderMerchantReference}`
   );
 
-  // Validate mandatory fields
+  // Validate mandatory fields and bounds
   if (!orderTrackingId || !orderNotificationType) {
     console.warn("[Pesapal IPN] Missing OrderTrackingId or OrderNotificationType");
     return NextResponse.json(
       { error: "Missing required query parameters: OrderTrackingId and OrderNotificationType" },
-      { status: 400 }
+      { status: 400, headers: { "Cache-Control": "no-store" } }
+    );
+  }
+
+  if (orderTrackingId.length > 128 || orderNotificationType.length > 64) {
+    return NextResponse.json(
+      { error: "Invalid IPN parameter length" },
+      { status: 400, headers: { "Cache-Control": "no-store" } }
     );
   }
 
@@ -31,12 +67,15 @@ export async function GET(req: NextRequest) {
       console.info(
         `[Pesapal IPN] Payment already verified as COMPLETED for trackingId=${orderTrackingId}, ref=${orderMerchantReference}. Acknowledging idempotent IPN.`
       );
-      return NextResponse.json({
-        orderNotificationType: "IPNCHANGE",
-        orderTrackingId,
-        orderMerchantReference: orderMerchantReference || existingRecord.merchant_reference,
-        status: 200,
-      });
+      return NextResponse.json(
+        {
+          orderNotificationType: "IPNCHANGE",
+          orderTrackingId,
+          orderMerchantReference: orderMerchantReference || existingRecord.merchant_reference,
+          status: 200,
+        },
+        { headers: { "Cache-Control": "no-store" } }
+      );
     }
 
     // Step 1: Query authoritative status directly from Pesapal
@@ -66,9 +105,11 @@ export async function GET(req: NextRequest) {
     // Step 3: Integrity verification if local record exists
     if (existingRecord) {
       // Amount verification
-      const amountMismatch = Math.abs(existingRecord.amount - pesapalStatus.amount) > 0.01;
+      const verifiedAmount = Number(pesapalStatus.amount);
+      const amountMismatch =
+        !Number.isFinite(verifiedAmount) || Math.abs(existingRecord.amount - verifiedAmount) > 0.01;
       const currencyMismatch =
-        existingRecord.currency.toUpperCase() !== pesapalStatus.currency.toUpperCase();
+        existingRecord.currency.toUpperCase() !== (pesapalStatus.currency || "").toUpperCase();
 
       if (amountMismatch || currencyMismatch) {
         console.error(
@@ -99,22 +140,33 @@ export async function GET(req: NextRequest) {
     );
 
     // Step 5: Return Pesapal's required acknowledgment JSON
-    return NextResponse.json({
-      orderNotificationType: "IPNCHANGE",
-      orderTrackingId,
-      orderMerchantReference: ref,
-      status: 200,
-    });
+    return NextResponse.json(
+      {
+        orderNotificationType: "IPNCHANGE",
+        orderTrackingId,
+        orderMerchantReference: ref,
+        status: 200,
+      },
+      { headers: { "Cache-Control": "no-store" } }
+    );
   } catch (err: unknown) {
     console.error(`[Pesapal IPN] Failed to process IPN for trackingId=${orderTrackingId}:`, err);
     return NextResponse.json(
       { error: "Internal error processing payment verification" },
-      { status: 500 }
+      { status: 500, headers: { "Cache-Control": "no-store" } }
     );
   }
 }
 
+export async function GET(req: NextRequest) {
+  return handleIpn(req);
+}
+
+export async function HEAD() {
+  return new NextResponse(null, { status: 200, headers: { "Cache-Control": "no-store" } });
+}
+
 // In case Pesapal sends a POST IPN in some webhook configurations, support it identically
 export async function POST(req: NextRequest) {
-  return GET(req);
+  return handleIpn(req);
 }
